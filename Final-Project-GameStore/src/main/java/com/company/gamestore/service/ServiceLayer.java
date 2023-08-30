@@ -91,6 +91,7 @@ public class ServiceLayer {
                     Optional<Console> console = consoleRepository.findById(ivModel.getItemId());
 
                     if (console.isPresent()) {
+                        System.out.println("Console is present");
                         if (console.get().getQuantity() < ivModel.getQuantity()) {
                             throw new InsufficientStockException("Order quantity must be less than or equal available stock");
                         }

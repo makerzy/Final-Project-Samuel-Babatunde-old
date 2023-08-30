@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,7 +29,7 @@ public class InvoiceControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
     @MockBean
     private InvoiceRepository invoiceRepository;
 
@@ -100,28 +101,50 @@ public class InvoiceControllerTest {
 
     @Test
     public void shouldGetAllInvoices() throws Exception {
-
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/invoices"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andReturn();
     }
 
     @Test
     public void shouldGetInvoiceById() throws Exception {
-
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/invoices/{id}", invoice.getInvoiceId()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
     }
 
     @Test
     public void shouldGetInvoiceByCustomerName() throws Exception {
-
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/invoices/customers/{name}", invoice.getName()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
     }
 
 
     @Test
     public void shouldUpdateInvoice() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put("/invoices/{id}", invoice.getInvoiceId())
+                        .content(mapper.writeValueAsString(invoice))
+                        .contentType(MediaType.APPLICATION_JSON)
 
+        ).andExpect(status().isNoContent());
     }
 
     @Test
     public void shouldDeleteInvoice() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/invoices/{id}", invoice.getInvoiceId())
 
+        ).andExpect(status().isNoContent());
     }
 
 

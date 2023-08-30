@@ -30,7 +30,7 @@ public class TShirtControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
     @MockBean
     private TShirtRepository tShirtRepository;
     private TShirt tShirt;
