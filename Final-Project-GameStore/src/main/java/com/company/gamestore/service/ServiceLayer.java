@@ -171,7 +171,7 @@ public class ServiceLayer {
                 Optional<Invoice> invoice = invoiceRepository.findById(id);
                 if(invoice.isEmpty())
                     throw new Exception("Cannot update not existing Invoice Object");
-                invoiceRepository.save((Invoice) object);
+                invoiceRepository.save(newInvoice);
                 break;
 
         }
