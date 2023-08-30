@@ -3,6 +3,7 @@ package com.company.gamestore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,25 +17,37 @@ public class Invoice implements Serializable {
     @Column(name = "invoice_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int invoiceId;
+    @NotEmpty(message = "You must supply a value for name.")
     private String name;
+    @NotEmpty(message = "You must supply a value for street.")
     private String street;
+    @NotEmpty(message = "You must supply a value for city.")
     private String city;
+    @NotEmpty(message = "You must supply a value for state.")
     private String state;
+    @NotEmpty(message = "You must supply a value for zipCode.")
     private String zipCode;
 
+    @NotEmpty(message = "You must supply a value for itemType.")
     @Column(name = "item_type")
     private String itemType;
+    @NotEmpty(message = "You must supply a value for itemId.")
     @Column(name = "item_id")
     private int itemId;
+    @NotEmpty(message = "You must supply a value for quantity.")
     private int  quantity;
 
+    @NotEmpty(message = "You must supply a value for unitPrice.")
     @Column(name = "unit_price")
     private double unitPrice;
+    @NotEmpty(message = "You must supply a value for subtotal.")
     private double subtotal;
+    @NotEmpty(message = "You must supply a value for tax.")
     private double tax;
+    @NotEmpty(message = "You must supply a value for processingFee.")
     @Column(name = "processing_fee")
     private double processingFee;
-
+    @NotEmpty(message = "You must supply a value for total.")
     private double total;
 
     public int getInvoiceId() {

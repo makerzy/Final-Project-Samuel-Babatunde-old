@@ -3,6 +3,7 @@ package com.company.gamestore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,12 +17,18 @@ public class Game implements Serializable {
     @Column(name = "game_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int gameId;
+    @NotEmpty(message = "You must supply a value for title.")
     private String title;
+    @NotEmpty(message = "You must supply a value for esrbRating.")
     @Column(name = "esr_rating")
     private String esrbRating;
+    @NotEmpty(message = "You must supply a value for description.")
     private String description;
+    @NotEmpty(message = "You must supply a value for price.")
     private double price;
+    @NotEmpty(message = "You must supply a value for studio.")
     private String studio;
+    @NotEmpty(message = "You must supply a value for quantity.")
     private int quantity;
 
     public int getGameId() {

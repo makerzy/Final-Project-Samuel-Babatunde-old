@@ -1,6 +1,9 @@
 package com.company.gamestore.service;
 
 
+import com.company.gamestore.exception.InsufficientStockException;
+import com.company.gamestore.exception.InvalidQuantityException;
+import com.company.gamestore.exception.UnknownStateCodeException;
 import com.company.gamestore.model.*;
 import com.company.gamestore.repository.*;
 import com.company.gamestore.viewmodel.InvoiceViewModel;
@@ -15,15 +18,12 @@ import java.util.Optional;
 public class ServiceLayer {
 
     private final double EXTRA_FEE= 15.49;
-
     private InvoiceRepository invoiceRepository;
     private TaxRepository taxRepository;
     private FeeRepository feeRepository;
-
     private ConsoleRepository consoleRepository;
     private GameRepository gameRepository;
     private TShirtRepository tShirtRepository;
-
 
     @Autowired
     public ServiceLayer(
@@ -42,16 +42,14 @@ public class ServiceLayer {
         this.tShirtRepository = tShirtRepository;
     }
 
-
-
-
     @Transactional
     public Invoice saveInvoice(InvoiceViewModel ivModel)  {
         Invoice invoice  = new Invoice();
+        // TODO - `item` is never used
         Object item;
         try {
             if (ivModel.getQuantity() < 1) {
-                throw new Exception("Order quantity must be greater than or equal to 1");
+                throw new InvalidQuantityException("Order quantity must be greater than or equal to 1");
             }
 
             invoice.setName(ivModel.getName());
@@ -68,7 +66,7 @@ public class ServiceLayer {
                     Optional<Game> game = gameRepository.findById(ivModel.getItemId());
                     if (game.isPresent()) {
                         if (game.get().getQuantity() < ivModel.getQuantity()) {
-                            throw new Exception("Order quantity must be less than or equal available stock");
+                            throw new InsufficientStockException("Order quantity must be less than or equal available stock");
                         }
                         unitPrice = game.get().getPrice();
                     }
@@ -78,7 +76,7 @@ public class ServiceLayer {
                     Optional<TShirt> tShirt = tShirtRepository.findById(ivModel.getItemId());
                     if (tShirt.isPresent()) {
                         if (tShirt.get().getQuantity() < ivModel.getQuantity()) {
-                            throw new Exception("Order quantity must be less than or equal available stock");
+                            throw new InsufficientStockException("Order quantity must be less than or equal available stock");
                         }
                         unitPrice = tShirt.get().getPrice();
                     }
@@ -88,7 +86,7 @@ public class ServiceLayer {
                     Optional<Console> console = consoleRepository.findById(ivModel.getItemId());
                     if (console.isPresent()) {
                         if (console.get().getQuantity() < ivModel.getQuantity()) {
-                            throw new Exception("Order quantity must be less than or equal available stock");
+                            throw new InsufficientStockException("Order quantity must be less than or equal available stock");
                         }
                         unitPrice = console.get().getPrice();
                     }
@@ -106,7 +104,7 @@ public class ServiceLayer {
                 // size ==0 if the state code is invalid,
                 // since we have all the supported states in the DB
                 // Hence, we throw an exception
-                throw new Exception("Cannot process order for unknown state code");
+                throw new UnknownStateCodeException("Cannot process order for unknown state code");
             }
             double taxValue = subtotal * rate;
             invoice.setTax(taxValue);
@@ -130,5 +128,4 @@ public class ServiceLayer {
         }
         return invoice;
     }
-
 }

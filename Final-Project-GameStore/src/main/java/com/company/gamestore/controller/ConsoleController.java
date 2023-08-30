@@ -1,7 +1,6 @@
 package com.company.gamestore.controller;
 
 import com.company.gamestore.model.Console;
-import com.company.gamestore.model.Game;
 import com.company.gamestore.repository.ConsoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,12 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import javax.validation.Valid;
 
 @RestController
 public class ConsoleController {
     @Autowired
     ConsoleRepository ConRepo;
-
 
     // read all console
     @GetMapping("/console")
@@ -33,20 +32,15 @@ public class ConsoleController {
         return null;
     }
 
-
-
-
     // update console
     @PutMapping("/console/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateConsole(@RequestBody Console console, @PathVariable Integer id) {
+    public void updateConsole(@RequestBody @Valid Console console, @PathVariable Integer id) {
         Optional<Console> console1 = ConRepo.findById(id);
         if (console1.isPresent())
             ConRepo.save(console);
 
     }
-
-
 
     //  create console
     @PostMapping(value = "/console")
@@ -55,8 +49,6 @@ public class ConsoleController {
         return ConRepo.save(console);
     }
 
-
-
     // delete console
     @DeleteMapping("/console/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -64,15 +56,10 @@ public class ConsoleController {
         ConRepo.deleteById(id);
     }
 
-
-
-
     // search console by manufacturer
-
     @GetMapping("/console/manufacturer/{manufacturer}")
     @ResponseStatus(HttpStatus.OK)
     public List<Console> getConsoleByManufacturer(@PathVariable String manufacturer) {
         return ConRepo.findByManufacturer(manufacturer);
     }
-
 }

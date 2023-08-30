@@ -38,10 +38,9 @@ public class InvoiceController {
         return invoiceRepository.findByName(name);
     }
 
-
-
     @PostMapping("/invoices")
     @ResponseStatus(HttpStatus.CREATED)
+    // TODO - should we use `Invoice` or `InvoiceVideoModel`? - the `updateInvoice` below uses `Invoice`
     public Invoice addInvoice(@RequestBody InvoiceViewModel invoiceViewModel){
         return serviceLayer.saveInvoice(invoiceViewModel);
     }

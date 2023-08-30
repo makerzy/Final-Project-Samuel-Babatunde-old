@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -16,6 +17,7 @@ public class Tax {
 
     @Id
     private String state;
+    @NotEmpty(message = "You must supply a value for rate.")
     private double rate;
 
     public String getState() {
