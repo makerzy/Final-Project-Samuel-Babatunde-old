@@ -55,21 +55,21 @@ public class GameController {
     }
 
     // search game by studio
-    @GetMapping("/games/studio/{studio}")
+    @GetMapping("/games/studios/{studio}")
     @ResponseStatus(HttpStatus.OK)
     public List<Game> getGameByStudio(@PathVariable String studio) {
         return GameRepo.findByStudio(studio);
     }
 
     // search game by esrb rating
-    @GetMapping("/games/esrbRating/{esrbRating}")
+    @GetMapping("/games/esrbRatings/{esrbRating}")
     @ResponseStatus(HttpStatus.OK)
     public List<Game> getGameByEsrbRating(@PathVariable String esrbRating) {
         return GameRepo.findByEsrbRating(esrbRating);
     }
 
     // search game by title
-    @GetMapping("/games/title/{title}")
+    @GetMapping("/games/titles/{title}")
     @ResponseStatus(HttpStatus.OK)
     public List<Game> getGameByTitle(@PathVariable String title) {
         return GameRepo.findByTitle(title);

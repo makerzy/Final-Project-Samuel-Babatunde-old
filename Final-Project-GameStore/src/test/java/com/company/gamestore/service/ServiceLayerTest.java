@@ -24,6 +24,11 @@ public class ServiceLayerTest {
 
     @BeforeEach
     private void setUp(){
+        setUpConsoleRepo();
+        setUpFeeRepo();
+        setUpTaxRepo();
+        setUpTShirtRepo();
+        setUpGameRepo();
 
         serviceLayer = new ServiceLayer(invoiceRepository, taxRepository, feeRepository, consoleRepository, gameRepository, tShirtRepository);
     }
@@ -86,7 +91,7 @@ public class ServiceLayerTest {
         doReturn(tShirts).when(tShirtRepository).findAll();
     }
 
-    public void setUpFee(){
+    public void setUpFeeRepo(){
         feeRepository = mock(FeeRepository.class);
 
          Fee fee = new Fee();
@@ -112,7 +117,7 @@ public class ServiceLayerTest {
         doReturn(fees).when(feeRepository).findAll();
     }
 
-    public void setUpTax(){
+    public void setUpTaxRepo(){
         taxRepository = mock(TaxRepository.class);
         Tax tax = new Tax();
         tax.setState("CA");

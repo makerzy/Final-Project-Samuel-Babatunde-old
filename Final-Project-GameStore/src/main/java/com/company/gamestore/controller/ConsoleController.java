@@ -17,14 +17,14 @@ public class ConsoleController {
     ConsoleRepository ConRepo;
 
     // read all console
-    @GetMapping("/console")
+    @GetMapping("/consoles")
     @ResponseStatus(HttpStatus.OK)
     public List<Console> getAllConsole() {
         return ConRepo.findAll();
     }
 
     // read console by ID
-    @GetMapping("/console/{id}")
+    @GetMapping("/consoles/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Console getConsoleById(@PathVariable int id) {
         Optional<Console> console = ConRepo.findById(id);
@@ -32,7 +32,7 @@ public class ConsoleController {
     }
 
     // update console
-    @PutMapping("/console/{id}")
+    @PutMapping("/consoles/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateConsole(@RequestBody @Valid Console console, @PathVariable Integer id) {
         Optional<Console> console1 = ConRepo.findById(id);
@@ -42,21 +42,21 @@ public class ConsoleController {
     }
 
     //  create console
-    @PostMapping(value = "/console")
+    @PostMapping(value = "/consoles")
     @ResponseStatus(HttpStatus.CREATED)
     public Console addConsole(@RequestBody Console console) {
         return ConRepo.save(console);
     }
 
     // delete console
-    @DeleteMapping("/console/{id}")
+    @DeleteMapping("/consoles/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteConsole(@PathVariable Integer id) {
         ConRepo.deleteById(id);
     }
 
     // search console by manufacturer
-    @GetMapping("/console/manufacturer/{manufacturer}")
+    @GetMapping("/consoles/manufacturers/{manufacturer}")
     @ResponseStatus(HttpStatus.OK)
     public List<Console> getConsoleByManufacturer(@PathVariable String manufacturer) {
         return ConRepo.findByManufacturer(manufacturer);

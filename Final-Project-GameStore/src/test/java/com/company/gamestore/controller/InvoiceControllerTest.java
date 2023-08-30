@@ -87,15 +87,15 @@ public class InvoiceControllerTest {
                 )
 
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value("Customer name"))
+                .andExpect(jsonPath("$.street").value("1111 Customer street"))
+                .andExpect(jsonPath("$.city").value("Redwood"))
+                .andExpect(jsonPath("$.state").value("California"))
+                .andExpect(jsonPath("$.zipcode").value("94065"))
+                .andExpect(jsonPath("$.item_type").value("Console"))
+                .andExpect(jsonPath("$.item_id").value(1))
+                .andExpect(jsonPath("$.quantity").value(1))
                 .andReturn();
-//                .andExpect(jsonPath("$.name").value("Customer name"))
-//                .andExpect(jsonPath("$.street").value("1111 Customer street"))
-//                .andExpect(jsonPath("$.city").value("Redwood"))
-//                .andExpect(jsonPath("$.state").value("California"))
-//                .andExpect(jsonPath("$.zipcode").value("94065"))
-//                .andExpect(jsonPath("$.item_type").value("Console"))
-//                .andExpect(jsonPath("$.item_id").value(1))
-//                .andExpect(jsonPath("$.quantity").value(1));
     }
 
     @Test

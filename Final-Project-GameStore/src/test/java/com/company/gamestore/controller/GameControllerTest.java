@@ -121,7 +121,7 @@ class GameControllerTest {
         when(gameRepository.findByStudio("QuestWorks Studios")).thenReturn(Arrays.asList(game));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/games/studio/{studio}", "QuestWorks Studios"))
+                        .get("/games/studios/{studio}", "QuestWorks Studios"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].title").value("Title1"))
                 .andExpect(jsonPath("$[0].esrbRating").value("E10"))
@@ -137,7 +137,7 @@ class GameControllerTest {
         when(gameRepository.findByTitle("The Legend of Adventure")).thenReturn(Arrays.asList(game));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/games/title/{title}", "The Legend of Adventure"))
+                        .get("/games/titles/{title}", "The Legend of Adventure"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].title").value("Title1"))
                 .andExpect(jsonPath("$[0].esrbRating").value("E10"))
@@ -153,7 +153,7 @@ class GameControllerTest {
         when(gameRepository.findByEsrbRating("E10+")).thenReturn(Arrays.asList(game));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/games/esrbRating/{esrbRating}", "E10+"))
+                        .get("/games/esrbRatings/{esrbRating}", "E10+"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].title").value("Title1"))
                 .andExpect(jsonPath("$[0].esrbRating").value("E10"))
