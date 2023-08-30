@@ -31,7 +31,7 @@ class ConsoleControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
     @MockBean
     private ConsoleRepository consoleRepository;
     private Console console;
