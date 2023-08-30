@@ -3,6 +3,7 @@ package com.company.gamestore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,25 +17,37 @@ public class Invoice implements Serializable {
     @Column(name = "invoice_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int invoiceId;
+    @NotEmpty(message = "You must supply a value for name.")
     private String name;
+    @NotEmpty(message = "You must supply a value for street.")
     private String street;
+    @NotEmpty(message = "You must supply a value for city.")
     private String city;
+    @NotEmpty(message = "You must supply a value for state.")
     private String state;
-    private String zipCode;
+    @NotEmpty(message = "You must supply a value for zipcode.")
+    private String zipcode;
 
+    @NotEmpty(message = "You must supply a value for itemType.")
     @Column(name = "item_type")
     private String itemType;
+    @NotEmpty(message = "You must supply a value for itemId.")
     @Column(name = "item_id")
     private int itemId;
+    @NotEmpty(message = "You must supply a value for quantity.")
     private int  quantity;
 
+    @NotEmpty(message = "You must supply a value for unitPrice.")
     @Column(name = "unit_price")
     private double unitPrice;
+    @NotEmpty(message = "You must supply a value for subtotal.")
     private double subtotal;
+    @NotEmpty(message = "You must supply a value for tax.")
     private double tax;
+    @NotEmpty(message = "You must supply a value for processingFee.")
     @Column(name = "processing_fee")
     private double processingFee;
-
+    @NotEmpty(message = "You must supply a value for total.")
     private double total;
 
     public int getInvoiceId() {
@@ -77,12 +90,12 @@ public class Invoice implements Serializable {
         this.state = state;
     }
 
-    public String getZipCode() {
-        return zipCode;
+    public String getZipcode() {
+        return zipcode;
     }
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
     public String getItemType() {
@@ -154,12 +167,12 @@ public class Invoice implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Invoice invoice = (Invoice) o;
-        return invoiceId == invoice.invoiceId && itemId == invoice.itemId && quantity == invoice.quantity && Double.compare(invoice.unitPrice, unitPrice) == 0 && Double.compare(invoice.subtotal, subtotal) == 0 && Double.compare(invoice.tax, tax) == 0 && Double.compare(invoice.processingFee, processingFee) == 0 && Double.compare(invoice.total, total) == 0 && Objects.equals(name, invoice.name) && Objects.equals(street, invoice.street) && Objects.equals(city, invoice.city) && Objects.equals(state, invoice.state) && Objects.equals(zipCode, invoice.zipCode) && Objects.equals(itemType, invoice.itemType);
+        return invoiceId == invoice.invoiceId && itemId == invoice.itemId && quantity == invoice.quantity && Double.compare(invoice.unitPrice, unitPrice) == 0 && Double.compare(invoice.subtotal, subtotal) == 0 && Double.compare(invoice.tax, tax) == 0 && Double.compare(invoice.processingFee, processingFee) == 0 && Double.compare(invoice.total, total) == 0 && Objects.equals(name, invoice.name) && Objects.equals(street, invoice.street) && Objects.equals(city, invoice.city) && Objects.equals(state, invoice.state) && Objects.equals(zipcode, invoice.zipcode) && Objects.equals(itemType, invoice.itemType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invoiceId, name, street, city, state, zipCode, itemType, itemId, quantity, unitPrice, subtotal, tax, processingFee, total);
+        return Objects.hash(invoiceId, name, street, city, state, zipcode, itemType, itemId, quantity, unitPrice, subtotal, tax, processingFee, total);
     }
 
     @Override
@@ -170,7 +183,7 @@ public class Invoice implements Serializable {
                 ", street='" + street + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
-                ", zipCode='" + zipCode + '\'' +
+                ", zipcode='" + zipcode + '\'' +
                 ", itemType='" + itemType + '\'' +
                 ", itemId=" + itemId +
                 ", quantity=" + quantity +

@@ -4,6 +4,7 @@ package com.company.gamestore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,10 +17,15 @@ public class TShirt implements Serializable {
     @Column(name = "tshirt_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int tshirtId;
+    @NotEmpty(message = "You must supply a value for size.")
     private String size;
+    @NotEmpty(message = "You must supply a value for color.")
     private String color;
+    @NotEmpty(message = "You must supply a value for description.")
     private String description;
+    @NotEmpty(message = "You must supply a value for price.")
     private  double price;
+    @NotEmpty(message = "You must supply a value for quantity.")
     private int quantity;
 
     public int getTshirtId() {

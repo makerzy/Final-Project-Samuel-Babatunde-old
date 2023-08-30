@@ -10,7 +10,7 @@ public class InvoiceViewModel {
     private String city;
 
     private String state;
-    private String zipCode;
+    private String zipcode;
 
     private String itemType;
     private int itemId;
@@ -57,12 +57,12 @@ public class InvoiceViewModel {
         this.state = state;
     }
 
-    public String getZipCode() {
-        return zipCode;
+    public String getZipcode() {
+        return zipcode;
     }
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
     public String getItemType() {
@@ -95,12 +95,12 @@ public class InvoiceViewModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InvoiceViewModel that = (InvoiceViewModel) o;
-        return invoiceId == that.invoiceId && itemId == that.itemId && quantity == that.quantity && Objects.equals(name, that.name) && Objects.equals(street, that.street) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(zipCode, that.zipCode) && Objects.equals(itemType, that.itemType);
+        return invoiceId == that.invoiceId && itemId == that.itemId && quantity == that.quantity && Objects.equals(name, that.name) && Objects.equals(street, that.street) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(zipcode, that.zipcode) && Objects.equals(itemType, that.itemType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invoiceId, name, street, city, state, zipCode, itemType, itemId, quantity);
+        return Objects.hash(invoiceId, name, street, city, state, zipcode, itemType, itemId, quantity);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class InvoiceViewModel {
                 ", street='" + street + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
-                ", zipCode='" + zipCode + '\'' +
+                ", zipCode='" + zipcode + '\'' +
                 ", itemType='" + itemType + '\'' +
                 ", itemId=" + itemId +
                 ", quantity=" + quantity +
