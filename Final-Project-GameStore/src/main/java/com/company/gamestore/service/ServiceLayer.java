@@ -45,8 +45,7 @@ public class ServiceLayer {
     @Transactional
     public Invoice saveInvoice(InvoiceViewModel ivModel)  {
         Invoice invoice  = new Invoice();
-        // TODO - `item` is never used
-        Object item;
+
         try {
             if (ivModel.getQuantity() < 1) {
                 throw new InvalidQuantityException("Order quantity must be greater than or equal to 1");
@@ -128,4 +127,56 @@ public class ServiceLayer {
         }
         return invoice;
     }
+
+
+    @Transactional
+    public void handleUpdate(String category, int id, Object object) throws Exception {
+
+        switch (category) {
+            case "Game":
+                Game newGame = (Game) object;
+                if(newGame.getGameId() != id){
+                    throw new Exception("Game ID and ID must be the same");
+                }
+                Optional<Game> game = gameRepository.findById(id);
+                if(game.isEmpty())
+                    throw new Exception("Cannot update not existing Game Object");
+                gameRepository.save(newGame);
+                break;
+            case "Console":
+                Console newConsole = (Console) object;
+                if(newConsole.getConsoleId() != id){
+                    throw new Exception("Console ID and ID must be the same");
+                }
+                Optional<Console> console = consoleRepository.findById(id);
+                if(console.isEmpty())
+                    throw new Exception("Cannot update not existing Console Object");
+                consoleRepository.save(newConsole);
+                break;
+            case "T-shirt":
+                TShirt newTshirt = (TShirt) object;
+                if(newTshirt.getTshirtId() != id){
+                    throw new Exception("T-Shirt ID and ID must be the same");
+                }
+                Optional<TShirt> tShirt = tShirtRepository.findById(id);
+                if(tShirt.isEmpty())
+                    throw new Exception("Cannot update not existing T-Shirt Object");
+                tShirtRepository.save(newTshirt);
+                break;
+            case "Invoice":
+                Invoice newInvoice = (Invoice) object;
+                if(newInvoice.getInvoiceId() != id){
+                    throw new Exception("Invoice ID and ID must be the same");
+                }
+                Optional<Invoice> invoice = invoiceRepository.findById(id);
+                if(invoice.isEmpty())
+                    throw new Exception("Cannot update not existing Invoice Object");
+                invoiceRepository.save((Invoice) object);
+                break;
+
+        }
+    }
+
+
+
 }

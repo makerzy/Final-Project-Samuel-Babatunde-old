@@ -43,9 +43,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     public Game getGameById(@PathVariable int id) {
         Optional<Game> game = GameRepo.findById(id);
-        if (game.isPresent())
-            return game.get();
-        return null;
+        return game.orElse(null);
     }
 
     // delete game

@@ -27,9 +27,7 @@ public class ConsoleController {
     @ResponseStatus(HttpStatus.OK)
     public Console getConsoleById(@PathVariable int id) {
         Optional<Console> console = ConRepo.findById(id);
-        if (console.isPresent())
-            return console.get();
-        return null;
+        return console.orElse(null);
     }
 
     // update console
