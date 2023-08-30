@@ -89,19 +89,23 @@ public class ServiceLayer {
                     break;
                 case "Console":
                     Optional<Console> console = consoleRepository.findById(ivModel.getItemId());
+
                     if (console.isPresent()) {
                         if (console.get().getQuantity() < ivModel.getQuantity()) {
                             throw new InsufficientStockException("Order quantity must be less than or equal available stock");
                         }
                         unitPrice = console.get().getPrice();
+                        System.out.println("UnitPrice: "+unitPrice);
+
                     }else{
                         throw new NotFoundException("Could not find a Console with ID of "+ ivModel.getItemId());
                     }
                     break;
             }
-
+//            System.out.println("UnitPrice: "+unitPrice);
             invoice.setUnitPrice(unitPrice);
             double subtotal = unitPrice * ivModel.getQuantity();
+            System.out.println("Subtotal: "+subtotal);
             invoice.setSubtotal(subtotal);
             double rate = 0.0;
             List<Tax> taxes = taxRepository.findByState(ivModel.getState());
@@ -113,7 +117,9 @@ public class ServiceLayer {
                 // Hence, we throw an exception
                 throw new UnknownStateCodeException("Cannot process order for unknown state code");
             }
+
             double taxValue = subtotal * rate;
+            System.out.println("Tax Value: "+taxValue);
             invoice.setTax(taxValue);
             List<Fee> fees = feeRepository.findByProductType(ivModel.getItemType());
             double processingFee = 0.0;
@@ -123,9 +129,11 @@ public class ServiceLayer {
             if (ivModel.getQuantity() > 10) {
                 processingFee = processingFee + EXTRA_FEE;
             }
+            System.out.println("Processing Fee: "+processingFee);
             invoice.setProcessingFee(processingFee);
 
             double total = subtotal + taxValue + processingFee;
+            System.out.println("Total: "+total);
             invoice.setTotal(total);
 
             invoice = invoiceRepository.save(invoice);
