@@ -38,11 +38,11 @@ class GameControllerTest {
     @BeforeEach
     public void setUp() {
         game = new Game();
-        game.setTitle("The Legend of Adventure");
-        game.setEsrbRating("E10+");
-        game.setDescription("Embark on an epic journey to save the mystical land from darkness.");
+        game.setTitle("Title1");
+        game.setEsrbRating("E10");
+        game.setDescription("GameNew");
         game.setPrice(49.99);
-        game.setStudio("QuestWorks Studios");
+        game.setStudio("Studioss");
         game.setQuantity(100);
 
     }
@@ -56,11 +56,11 @@ class GameControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.title").value("The Legend of Adventure"))
-                .andExpect(jsonPath("$.esr_rating").value("E10+"))
-                .andExpect(jsonPath("$.description").value("Embark on an epic journey to save the mystical land from darkness."))
+                .andExpect(jsonPath("$.title").value("Title1"))
+                .andExpect(jsonPath("$.esrbRating").value("E10"))
+                .andExpect(jsonPath("$.description").value("GameNew"))
                 .andExpect(jsonPath("$.price").value(49.99))
-                .andExpect(jsonPath("$.studio").value("QuestWorks Studios"))
+                .andExpect(jsonPath("$.studio").value("Studioss"))
                 .andExpect(jsonPath("$.quantity").value(100));
     }
 
@@ -71,13 +71,14 @@ class GameControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/games"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].title").value("The Legend of Adventure"))
-                .andExpect(jsonPath("$[0].esr_rating").value("E10+"))
-                .andExpect(jsonPath("$[0].description").value("Embark on an epic journey to save the mystical land from darkness."))
+                .andExpect(jsonPath("$[0].title").value("Title1"))
+                .andExpect(jsonPath("$[0].esrbRating").value("E10"))
+                .andExpect(jsonPath("$[0].description").value("GameNew"))
                 .andExpect(jsonPath("$[0].price").value(49.99))
-                .andExpect(jsonPath("$[0].studio").value("QuestWorks Studios"))
+                .andExpect(jsonPath("$[0].studio").value("Studioss"))
                 .andExpect(jsonPath("$[0].quantity").value(100));
     }
+
 
     @Test
     public void shouldGetGameById() throws Exception {
@@ -86,14 +87,14 @@ class GameControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/games/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("The Legend of Adventure"))
-                .andExpect(jsonPath("$.esr_rating").value("E10+"))
-                .andExpect(jsonPath("$.description").value("Embark on an epic journey to save the mystical land from darkness."))
+                .andExpect(jsonPath("$.title").value("Title1"))
+                .andExpect(jsonPath("$.esrbRating").value("E10"))
+                .andExpect(jsonPath("$.description").value("GameNew"))
                 .andExpect(jsonPath("$.price").value(49.99))
-                .andExpect(jsonPath("$.studio").value("QuestWorks Studios"))
+                .andExpect(jsonPath("$.studio").value("Studioss"))
                 .andExpect(jsonPath("$.quantity").value(100));
-
     }
+
 
     @Test
     public void shouldUpdateGame() throws Exception {
@@ -122,11 +123,11 @@ class GameControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/games/studio/{studio}", "QuestWorks Studios"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].title").value("The Legend of Adventure"))
-                .andExpect(jsonPath("$[0].esr_rating").value("E10+"))
-                .andExpect(jsonPath("$[0].description").value("Embark on an epic journey to save the mystical land from darkness."))
+                .andExpect(jsonPath("$[0].title").value("Title1"))
+                .andExpect(jsonPath("$[0].esrbRating").value("E10"))
+                .andExpect(jsonPath("$[0].description").value("GameNew"))
                 .andExpect(jsonPath("$[0].price").value(49.99))
-                .andExpect(jsonPath("$[0].studio").value("QuestWorks Studios"))
+                .andExpect(jsonPath("$[0].studio").value("Studioss"))
                 .andExpect(jsonPath("$[0].quantity").value(100));
     }
 
@@ -138,13 +139,14 @@ class GameControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/games/title/{title}", "The Legend of Adventure"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].title").value("The Legend of Adventure"))
-                .andExpect(jsonPath("$[0].esr_rating").value("E10+"))
-                .andExpect(jsonPath("$[0].description").value("Embark on an epic journey to save the mystical land from darkness."))
+                .andExpect(jsonPath("$[0].title").value("Title1"))
+                .andExpect(jsonPath("$[0].esrbRating").value("E10"))
+                .andExpect(jsonPath("$[0].description").value("GameNew"))
                 .andExpect(jsonPath("$[0].price").value(49.99))
-                .andExpect(jsonPath("$[0].studio").value("QuestWorks Studios"))
+                .andExpect(jsonPath("$[0].studio").value("Studioss"))
                 .andExpect(jsonPath("$[0].quantity").value(100));
     }
+
 
     @Test
     public void shouldGetGameByEsrbRating() throws Exception {
@@ -153,13 +155,14 @@ class GameControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/games/esrbRating/{esrbRating}", "E10+"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].title").value("The Legend of Adventure"))
-                .andExpect(jsonPath("$[0].esr_rating").value("E10+"))
-                .andExpect(jsonPath("$[0].description").value("Embark on an epic journey to save the mystical land from darkness."))
+                .andExpect(jsonPath("$[0].title").value("Title1"))
+                .andExpect(jsonPath("$[0].esrbRating").value("E10"))
+                .andExpect(jsonPath("$[0].description").value("GameNew"))
                 .andExpect(jsonPath("$[0].price").value(49.99))
-                .andExpect(jsonPath("$[0].studio").value("QuestWorks Studios"))
+                .andExpect(jsonPath("$[0].studio").value("Studioss"))
                 .andExpect(jsonPath("$[0].quantity").value(100));
     }
+
 
 
 
