@@ -2,7 +2,7 @@ package com.company.gamestore.service;
 
 import org.junit.jupiter.api.Test;
 
-public class InvoiceServiceTest {
+public class ServiceLayerTest {
 
 
     @Test

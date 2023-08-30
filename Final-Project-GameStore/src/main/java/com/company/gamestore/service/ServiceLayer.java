@@ -10,6 +10,7 @@ import com.company.gamestore.viewmodel.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -55,7 +56,7 @@ public class ServiceLayer {
             invoice.setStreet(ivModel.getStreet());
             invoice.setCity(ivModel.getCity());
             invoice.setState(ivModel.getState());
-            invoice.setZipCode(ivModel.getZipCode());
+            invoice.setZipcode(ivModel.getZipcode());
             invoice.setItemType(ivModel.getItemType());
             invoice.setItemId(ivModel.getItemId());
             invoice.setQuantity(ivModel.getQuantity());
@@ -69,15 +70,20 @@ public class ServiceLayer {
                         }
                         unitPrice = game.get().getPrice();
                     }
+                    else{
+                        throw new NotFoundException("Could not find a Game with ID of "+ ivModel.getItemId());
+                    }
 
                     break;
-                case "T-Shirt":
+                case "TShirt":
                     Optional<TShirt> tShirt = tShirtRepository.findById(ivModel.getItemId());
                     if (tShirt.isPresent()) {
                         if (tShirt.get().getQuantity() < ivModel.getQuantity()) {
                             throw new InsufficientStockException("Order quantity must be less than or equal available stock");
                         }
                         unitPrice = tShirt.get().getPrice();
+                    }else{
+                        throw new NotFoundException("Could not find a T-Shirt with ID of "+ ivModel.getItemId());
                     }
 
                     break;
@@ -88,6 +94,8 @@ public class ServiceLayer {
                             throw new InsufficientStockException("Order quantity must be less than or equal available stock");
                         }
                         unitPrice = console.get().getPrice();
+                    }else{
+                        throw new NotFoundException("Could not find a Console with ID of "+ ivModel.getItemId());
                     }
                     break;
             }
@@ -125,6 +133,7 @@ public class ServiceLayer {
         }catch (Exception e){
             ;
         }
+        System.out.println(invoice.toString());
         return invoice;
     }
 
@@ -153,7 +162,7 @@ public class ServiceLayer {
                     throw new Exception("Cannot update not existing Console Object");
                 consoleRepository.save(newConsole);
                 break;
-            case "T-shirt":
+            case "TShirt":
                 TShirt newTshirt = (TShirt) object;
                 if(newTshirt.getTshirtId() != id){
                     throw new Exception("T-Shirt ID and ID must be the same");

@@ -20,10 +20,9 @@ public class FeeRepositoryTest {
     @Test
     public void shouldGetFeeByProductType(){
         Fee fee = new Fee();
-        fee.setFee(13.99);
+        fee.setFee(14.99);
         fee.setProductType("Console");
 
-        feeRepository.save(fee);
         List<Fee> fees = feeRepository.findByProductType("Console");
         assertTrue(fees.contains(fee));
 

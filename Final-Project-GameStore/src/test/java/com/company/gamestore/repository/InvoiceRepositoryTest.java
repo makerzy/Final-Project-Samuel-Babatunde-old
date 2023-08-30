@@ -27,7 +27,7 @@ public class InvoiceRepositoryTest {
         invoice.setStreet("1111 Customer street");
         invoice.setCity("Redwood");
         invoice.setState("California");
-        invoice.setZipCode("94065");
+        invoice.setZipcode("94065");
         invoice.setItemType("Console");
         invoice.setItemId(1412);
         invoice.setUnitPrice(49.99);
@@ -60,7 +60,7 @@ public class InvoiceRepositoryTest {
         invoice1.setStreet("2222 Customer2 street");
         invoice1.setCity("Los Gatos");
         invoice1.setState("California");
-        invoice1.setZipCode("95032");
+        invoice1.setZipcode("95032");
         invoice1.setItemType("Console");
         invoice1.setItemId(1412);
         invoice1.setUnitPrice(49.99);

@@ -23,7 +23,6 @@ public class TaxRepositoryTest {
         tax.setState("FL");
         tax.setRate(0.06);
 
-        taxRepository.save(tax);
         List<Tax> taxR = taxRepository.findByState(tax.getState());
         assertTrue(taxR.contains(tax));
     }
