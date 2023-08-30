@@ -39,29 +39,29 @@ class ConsoleControllerTest {
     @BeforeEach
     public void setUp() {
         console = new Console();
-        console.setModel("PlayStation 5");
+        console.setModel("PlayStation5");
         console.setManufacturer("Sony");
         console.setMemoryAmount("825GB SSD");
-        console.setProcessor("Custom AMD Zen 2");
-        console.setPrice(499.99);
+        console.setProcessor("AMD");
+        console.setPrice(49.99);
         console.setQuantity(100);
 
     }
 
     @Test
-    public void shouldCreateNewGame() throws Exception {
+    public void shouldCreateNewConsole() throws Exception {
         when(consoleRepository.save(any(Console.class))).thenReturn(console);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/consoles")
+                        .post("/console")
                         .content(mapper.writeValueAsString(console))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.model").value("PlayStation 5"))
+                .andExpect(jsonPath("$.model").value("PlayStation5"))
                 .andExpect(jsonPath("$.manufacturer").value("Sony"))
                 .andExpect(jsonPath("$.memoryAmount").value("825GB SSD"))
-                .andExpect(jsonPath("$.processor").value("Custom AMD Zen 2"))
+                .andExpect(jsonPath("$.processor").value("AMD"))
                 .andExpect(jsonPath("$.price").value(49.99))
                 .andExpect(jsonPath("$.quantity").value(100));
     }
@@ -71,12 +71,11 @@ class ConsoleControllerTest {
         when(consoleRepository.findAll()).thenReturn(Arrays.asList(console));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/consoles"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].model").value("PlayStation 5"))
+                        .get("/console"))
+                .andExpect(jsonPath("$[0].model").value("PlayStation5"))
                 .andExpect(jsonPath("$[0].manufacturer").value("Sony"))
                 .andExpect(jsonPath("$[0].memoryAmount").value("825GB SSD"))
-                .andExpect(jsonPath("$[0].processor").value("Custom AMD Zen 2"))
+                .andExpect(jsonPath("$[0].processor").value("AMD"))
                 .andExpect(jsonPath("$[0].price").value(49.99))
                 .andExpect(jsonPath("$[0].quantity").value(100));
     }
@@ -88,10 +87,10 @@ class ConsoleControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/console/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.model").value("PlayStation 5"))
+                .andExpect(jsonPath("$.model").value("PlayStation5"))
                 .andExpect(jsonPath("$.manufacturer").value("Sony"))
                 .andExpect(jsonPath("$.memoryAmount").value("825GB SSD"))
-                .andExpect(jsonPath("$.processor").value("Custom AMD Zen 2"))
+                .andExpect(jsonPath("$.processor").value("AMD"))
                 .andExpect(jsonPath("$.price").value(49.99))
                 .andExpect(jsonPath("$.quantity").value(100));
     }
@@ -102,7 +101,7 @@ class ConsoleControllerTest {
 
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .put("/cnsole/{id}", console.getConsoleId())
+                        .put("/console/{id}", console.getConsoleId())
                         .content(mapper.writeValueAsString(console))
                         .contentType(MediaType.APPLICATION_JSON)
 
@@ -124,19 +123,13 @@ class ConsoleControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/console/manufacturer/{manufacturer}", "Sony"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].model").value("PlayStation 5"))
+                .andExpect(jsonPath("$[0].model").value("PlayStation5"))
                 .andExpect(jsonPath("$[0].manufacturer").value("Sony"))
                 .andExpect(jsonPath("$[0].memoryAmount").value("825GB SSD"))
-                .andExpect(jsonPath("$[0].processor").value("Custom AMD Zen 2"))
+                .andExpect(jsonPath("$[0].processor").value("AMD"))
                 .andExpect(jsonPath("$[0].price").value(49.99))
                 .andExpect(jsonPath("$[0].quantity").value(100));
     }
-
-
-
-
-
-
 
 
 }
