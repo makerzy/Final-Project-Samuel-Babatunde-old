@@ -45,7 +45,22 @@ public class InvoiceControllerTest {
     }
 
     @Test
+    public void shouldGetInvoiceByCustomerName(){
+
+    }
+
+    @Test
     public void shouldCreateNewInvoice(){
+
+    }
+
+    @Test
+    public void shouldUpdateInvoice(){
+
+    }
+
+    @Test
+    public void shouldDeleteInvoice(){
 
     }
 
