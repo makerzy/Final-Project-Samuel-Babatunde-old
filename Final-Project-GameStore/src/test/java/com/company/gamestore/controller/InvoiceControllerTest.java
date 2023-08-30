@@ -79,7 +79,6 @@ public class InvoiceControllerTest {
 
     @Test
     public void shouldCreateNewInvoice() throws Exception {
-//        when(serviceLayer.saveInvoice(any(InvoiceViewModel.class))).thenReturn(invoice);
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/invoices")

@@ -158,7 +158,7 @@ public class ServiceLayer {
                 }
                 Optional<Game> game = gameRepository.findById(id);
                 if(game.isEmpty())
-                    throw new Exception("Cannot update not existing Game Object");
+                    throw new Exception("Cannot update non existing Game Object");
                 gameRepository.save(newGame);
                 break;
             case "Console":
@@ -168,7 +168,7 @@ public class ServiceLayer {
                 }
                 Optional<Console> console = consoleRepository.findById(id);
                 if(console.isEmpty())
-                    throw new Exception("Cannot update not existing Console Object");
+                    throw new Exception("Cannot update non existing Console Object");
                 consoleRepository.save(newConsole);
                 break;
             case "TShirt":
@@ -178,7 +178,7 @@ public class ServiceLayer {
                 }
                 Optional<TShirt> tShirt = tShirtRepository.findById(id);
                 if(tShirt.isEmpty())
-                    throw new Exception("Cannot update not existing T-Shirt Object");
+                    throw new Exception("Cannot update non existing T-Shirt Object");
                 tShirtRepository.save(newTshirt);
                 break;
             case "Invoice":
@@ -188,7 +188,7 @@ public class ServiceLayer {
                 }
                 Optional<Invoice> invoice = invoiceRepository.findById(id);
                 if(invoice.isEmpty())
-                    throw new Exception("Cannot update not existing Invoice Object");
+                    throw new Exception("Cannot update non existing Invoice Object");
                 invoiceRepository.save(newInvoice);
                 break;
 

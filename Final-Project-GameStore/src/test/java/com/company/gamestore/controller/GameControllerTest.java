@@ -30,7 +30,7 @@ class GameControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
     @MockBean
     private GameRepository gameRepository;
     private Game game;
