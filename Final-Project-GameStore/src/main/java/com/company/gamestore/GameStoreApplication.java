@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 
 
 @EnableResourceServer
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication//(exclude = {SecurityAutoConfiguration.class})
 public class GameStoreApplication {
 
 	public static void main(String[] args) {
