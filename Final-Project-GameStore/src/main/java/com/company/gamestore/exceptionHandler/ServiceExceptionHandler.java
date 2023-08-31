@@ -10,12 +10,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ServiceExceptionHandler {
 
-    @ExceptionHandler(InsufficientStockException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<String> handleInsufficientStockException(InsufficientStockException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(InvalidQuantityException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleInvalidQuantityException(InvalidQuantityException e) {
@@ -30,13 +24,13 @@ public class ServiceExceptionHandler {
 
     @ExceptionHandler(IdMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<String> handleGameIdMismatchException(IdMismatchException e) {
+    public ResponseEntity<String> handleIdMismatchException(IdMismatchException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<String> handleConsoleNotFoundException(NotFoundException e) {
+    public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
