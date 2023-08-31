@@ -41,6 +41,8 @@ public class InvoiceController {
     @PostMapping("/invoices")
     @ResponseStatus(HttpStatus.CREATED)
     // TODO - should we use `Invoice` or `InvoiceVideoModel`? - the `updateInvoice` below uses `Invoice`
+    //  That's right. The create invoice should take an InvoiceModel Object and return an Invoice Object
+    //   And the Update Invoice is expected to take an Invoice Object arg because the invoice is already created and just need to be updated
     public Invoice addInvoice(@RequestBody InvoiceViewModel invoiceViewModel){
         return serviceLayer.saveInvoice(invoiceViewModel);
     }
@@ -51,6 +53,7 @@ public class InvoiceController {
         Optional<Invoice> invoice1 = invoiceRepository.findById(id);
         if(invoice1.isPresent())
             invoiceRepository.save(invoice);
+//        serviceLayer.handleUpdate("Invoice", id, invoice);
     }
 
     @DeleteMapping("/invoices/{id}")

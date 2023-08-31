@@ -234,14 +234,14 @@ public class ServiceLayerTest {
 
     }
 
-    @Test
-    public void shouldThrowIfAttemptToUpdateNullObject() {
-
-    }
-
-
-    @Test
-    public void shouldThrowIfAttemptToUpdateNotMatchingIDs() {
-
-    }
+//    @Test
+//    public void shouldThrowIfAttemptToUpdateNullObject() {
+//
+//    }
+//
+//
+//    @Test
+//    public void shouldThrowIfAttemptToUpdateNotMatchingIDs() {
+//
+//    }
 }

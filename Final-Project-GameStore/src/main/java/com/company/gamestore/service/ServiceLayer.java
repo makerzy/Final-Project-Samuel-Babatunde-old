@@ -148,7 +148,7 @@ public class ServiceLayer {
 
 
     @Transactional
-    public void handleUpdate(String category, int id, Object object) throws Exception {
+    public void handleUpdate(String category, int id, Object object) {
         try {
             switch (category) {
                 case "Game":
