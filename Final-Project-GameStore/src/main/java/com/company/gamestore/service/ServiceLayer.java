@@ -43,6 +43,10 @@ public class ServiceLayer {
         this.tShirtRepository = tShirtRepository;
     }
 
+    private double round(double value){
+        return (double)Math.round(value *100)/100;
+    }
+
     @Transactional
     public Invoice saveInvoice(InvoiceViewModel ivModel)  {
         Invoice invoice  = new Invoice();
@@ -61,8 +65,8 @@ public class ServiceLayer {
             invoice.setItemId(ivModel.getItemId());
             invoice.setQuantity(ivModel.getQuantity());
             double unitPrice = 0.0;
-            switch (ivModel.getItemType()) {
-                case "Game":
+            switch (ivModel.getItemType().toLowerCase()) {
+                case "game":
                     Optional<Game> game = gameRepository.findById(ivModel.getItemId());
                     if (game.isPresent()) {
                         if (game.get().getQuantity() < ivModel.getQuantity()) {
@@ -75,7 +79,7 @@ public class ServiceLayer {
                     }
 
                     break;
-                case "TShirt":
+                case "tshirt":
                     Optional<TShirt> tShirt = tShirtRepository.findById(ivModel.getItemId());
                     if (tShirt.isPresent()) {
                         if (tShirt.get().getQuantity() < ivModel.getQuantity()) {
@@ -87,7 +91,7 @@ public class ServiceLayer {
                     }
 
                     break;
-                case "Console":
+                case "console":
                     Optional<Console> console = consoleRepository.findById(ivModel.getItemId());
 
                     if (console.isPresent()) {
@@ -104,8 +108,8 @@ public class ServiceLayer {
                     break;
             }
 //            System.out.println("UnitPrice: "+unitPrice);
-            invoice.setUnitPrice(unitPrice);
-            double subtotal = unitPrice * ivModel.getQuantity();
+            invoice.setUnitPrice(round(unitPrice));
+            double subtotal = round(unitPrice * ivModel.getQuantity());
             System.out.println("Subtotal: "+subtotal);
             invoice.setSubtotal(subtotal);
             double rate = 0.0;
@@ -119,10 +123,11 @@ public class ServiceLayer {
                 throw new UnknownStateCodeException("Cannot process order for unknown state code");
             }
 
-            double taxValue = subtotal * rate;
+            double taxValue = round(subtotal * rate);
             System.out.println("Tax Value: "+taxValue);
             invoice.setTax(taxValue);
-            List<Fee> fees = feeRepository.findByProductType(ivModel.getItemType());
+            String itemType = ivModel.getItemType().equalsIgnoreCase("tshirt") ? "T-Shirt" : ivModel.getItemType();
+            List<Fee> fees = feeRepository.findByProductType(itemType);
             double processingFee = 0.0;
 
             if (ivModel.getQuantity() > 10) {
