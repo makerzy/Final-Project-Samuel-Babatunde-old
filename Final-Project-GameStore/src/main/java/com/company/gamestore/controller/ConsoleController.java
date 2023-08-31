@@ -2,6 +2,7 @@ package com.company.gamestore.controller;
 
 import com.company.gamestore.model.Console;
 import com.company.gamestore.repository.ConsoleRepository;
+import com.company.gamestore.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,9 @@ import javax.validation.Valid;
 public class ConsoleController {
     @Autowired
     ConsoleRepository ConRepo;
+
+    @Autowired
+    ServiceLayer serviceLayer;
 
     // read all console
     @GetMapping("/consoles")
@@ -35,16 +39,13 @@ public class ConsoleController {
     @PutMapping("/consoles/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateConsole(@RequestBody @Valid Console console, @PathVariable Integer id) {
-        Optional<Console> console1 = ConRepo.findById(id);
-        if (console1.isPresent())
-            ConRepo.save(console);
-
+            serviceLayer.handleUpdate("console", id, console);
     }
 
     //  create console
     @PostMapping(value = "/consoles")
     @ResponseStatus(HttpStatus.CREATED)
-    public Console addConsole(@RequestBody Console console) {
+    public Console addConsole(@RequestBody @Valid Console console) {
         return ConRepo.save(console);
     }
 

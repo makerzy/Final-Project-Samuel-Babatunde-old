@@ -12,7 +12,6 @@ public class UserController {
 
     @RequestMapping(value = "/userinfo", method = RequestMethod.GET)
     public Principal getUserInfo(Principal principal){
-        System.out.println("Called userInfo");
         return principal;
     }
 }

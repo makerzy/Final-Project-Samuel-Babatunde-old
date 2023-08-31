@@ -1,17 +1,13 @@
 package com.company.gamestore.service;
 
 
-import com.company.gamestore.exception.IdMismatchException;
-import com.company.gamestore.exception.InsufficientStockException;
-import com.company.gamestore.exception.InvalidQuantityException;
-import com.company.gamestore.exception.UnknownStateCodeException;
+import com.company.gamestore.exception.*;
 import com.company.gamestore.model.*;
 import com.company.gamestore.repository.*;
 import com.company.gamestore.viewmodel.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +48,6 @@ public class ServiceLayer {
     public Invoice saveInvoice(InvoiceViewModel ivModel)  {
         Invoice invoice  = new Invoice();
 
-//        try {
             if (ivModel.getQuantity() < 1) {
                 throw new InvalidQuantityException("Order quantity must be greater than or equal to 1");
             }
@@ -96,22 +91,18 @@ public class ServiceLayer {
                     Optional<Console> console = consoleRepository.findById(ivModel.getItemId());
 
                     if (console.isPresent()) {
-                        System.out.println("Console is present");
                         if (console.get().getQuantity() < ivModel.getQuantity()) {
                             throw new InsufficientStockException("Order quantity must be less than or equal available stock");
                         }
                         unitPrice = console.get().getPrice();
-                        System.out.println("UnitPrice: "+unitPrice);
 
                     }else{
                         throw new NotFoundException("Could not find a Console with ID of "+ ivModel.getItemId());
                     }
                     break;
             }
-//            System.out.println("UnitPrice: "+unitPrice);
             invoice.setUnitPrice(round(unitPrice));
             double subtotal = round(unitPrice * ivModel.getQuantity());
-            System.out.println("Subtotal: "+subtotal);
             invoice.setSubtotal(subtotal);
             double rate = 0.0;
             List<Tax> taxes = taxRepository.findByState(ivModel.getState());
@@ -125,7 +116,6 @@ public class ServiceLayer {
             }
 
             double taxValue = round(subtotal * rate);
-            System.out.println("Tax Value: "+taxValue);
             invoice.setTax(taxValue);
             String itemType = ivModel.getItemType().equalsIgnoreCase("tshirt") ? "T-Shirt" : ivModel.getItemType();
             List<Fee> fees = feeRepository.findByProductType(itemType);
@@ -136,26 +126,17 @@ public class ServiceLayer {
             }else{
                 processingFee = fees.get(0).getFee();
             }
-            System.out.println("Processing Fee: "+processingFee);
             invoice.setProcessingFee(processingFee);
 
             double total = subtotal + taxValue + processingFee;
-            System.out.println("Total: "+total);
             invoice.setTotal(total);
 
-            invoice = invoiceRepository.save(invoice);
-
-//        }catch (Exception e){
-//            ;
-//        }
-        System.out.println(invoice.toString());
-        return invoice;
+            return invoiceRepository.save(invoice);
     }
 
 
     @Transactional
     public void handleUpdate(String category, int id, Object object) {
-//        try {
             switch (category.toLowerCase()) {
                 case "game":
                     Game newGame = (Game) object;
@@ -199,9 +180,7 @@ public class ServiceLayer {
                     break;
 
             }
-//        }catch (Exception e){
-//            ;
-//        }
+
     }
 
 

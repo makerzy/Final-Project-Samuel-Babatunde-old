@@ -2,6 +2,7 @@ package com.company.gamestore.controller;
 
 import com.company.gamestore.model.Game;
 import com.company.gamestore.repository.GameRepository;
+import com.company.gamestore.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +17,14 @@ public class GameController {
     @Autowired
     GameRepository GameRepo;
 
+    @Autowired
+    ServiceLayer serviceLayer;
+
     // update game
     @PutMapping("/games/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateGame(@RequestBody Game game, @PathVariable Integer id) {
-        Optional<Game> game1 = GameRepo.findById(id);
-        if (game1.isPresent())
-            GameRepo.save(game);
+    public void updateGame(@RequestBody @Valid Game game, @PathVariable Integer id) {
+        serviceLayer.handleUpdate("game", id, game);
     }
 
     // create game
