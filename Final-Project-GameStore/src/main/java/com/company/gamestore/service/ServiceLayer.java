@@ -124,11 +124,11 @@ public class ServiceLayer {
             invoice.setTax(taxValue);
             List<Fee> fees = feeRepository.findByProductType(ivModel.getItemType());
             double processingFee = 0.0;
-            if (fees.size() > 0) {
-                processingFee = fees.get(0).getFee();
-            }
+
             if (ivModel.getQuantity() > 10) {
-                processingFee = processingFee + EXTRA_FEE;
+                processingFee = fees.get(0).getFee() + EXTRA_FEE;
+            }else{
+                processingFee = fees.get(0).getFee();
             }
             System.out.println("Processing Fee: "+processingFee);
             invoice.setProcessingFee(processingFee);
@@ -149,49 +149,52 @@ public class ServiceLayer {
 
     @Transactional
     public void handleUpdate(String category, int id, Object object) throws Exception {
+        try {
+            switch (category) {
+                case "Game":
+                    Game newGame = (Game) object;
+                    if (newGame.getGameId() != id) {
+                        throw new Exception("Game ID and ID must be the same");
+                    }
+                    Optional<Game> game = gameRepository.findById(id);
+                    if (game.isEmpty())
+                        throw new Exception("Cannot update non existing Game Object");
+                    gameRepository.save(newGame);
+                    break;
+                case "Console":
+                    Console newConsole = (Console) object;
+                    if (newConsole.getConsoleId() != id) {
+                        throw new Exception("Console ID and ID must be the same");
+                    }
+                    Optional<Console> console = consoleRepository.findById(id);
+                    if (console.isEmpty())
+                        throw new Exception("Cannot update non existing Console Object");
+                    consoleRepository.save(newConsole);
+                    break;
+                case "TShirt":
+                    TShirt newTshirt = (TShirt) object;
+                    if (newTshirt.getTshirtId() != id) {
+                        throw new Exception("T-Shirt ID and ID must be the same");
+                    }
+                    Optional<TShirt> tShirt = tShirtRepository.findById(id);
+                    if (tShirt.isEmpty())
+                        throw new Exception("Cannot update non existing T-Shirt Object");
+                    tShirtRepository.save(newTshirt);
+                    break;
+                case "Invoice":
+                    Invoice newInvoice = (Invoice) object;
+                    if (newInvoice.getInvoiceId() != id) {
+                        throw new Exception("Invoice ID and ID must be the same");
+                    }
+                    Optional<Invoice> invoice = invoiceRepository.findById(id);
+                    if (invoice.isEmpty())
+                        throw new Exception("Cannot update non existing Invoice Object");
+                    invoiceRepository.save(newInvoice);
+                    break;
 
-        switch (category) {
-            case "Game":
-                Game newGame = (Game) object;
-                if(newGame.getGameId() != id){
-                    throw new Exception("Game ID and ID must be the same");
-                }
-                Optional<Game> game = gameRepository.findById(id);
-                if(game.isEmpty())
-                    throw new Exception("Cannot update non existing Game Object");
-                gameRepository.save(newGame);
-                break;
-            case "Console":
-                Console newConsole = (Console) object;
-                if(newConsole.getConsoleId() != id){
-                    throw new Exception("Console ID and ID must be the same");
-                }
-                Optional<Console> console = consoleRepository.findById(id);
-                if(console.isEmpty())
-                    throw new Exception("Cannot update non existing Console Object");
-                consoleRepository.save(newConsole);
-                break;
-            case "TShirt":
-                TShirt newTshirt = (TShirt) object;
-                if(newTshirt.getTshirtId() != id){
-                    throw new Exception("T-Shirt ID and ID must be the same");
-                }
-                Optional<TShirt> tShirt = tShirtRepository.findById(id);
-                if(tShirt.isEmpty())
-                    throw new Exception("Cannot update non existing T-Shirt Object");
-                tShirtRepository.save(newTshirt);
-                break;
-            case "Invoice":
-                Invoice newInvoice = (Invoice) object;
-                if(newInvoice.getInvoiceId() != id){
-                    throw new Exception("Invoice ID and ID must be the same");
-                }
-                Optional<Invoice> invoice = invoiceRepository.findById(id);
-                if(invoice.isEmpty())
-                    throw new Exception("Cannot update non existing Invoice Object");
-                invoiceRepository.save(newInvoice);
-                break;
-
+            }
+        }catch (Exception e){
+            ;
         }
     }
 

@@ -3,6 +3,7 @@ package com.company.gamestore.controller;
 
 import com.company.gamestore.model.TShirt;
 import com.company.gamestore.repository.TShirtRepository;
+import com.company.gamestore.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,9 @@ import java.util.Optional;
 
 @RestController
 public class TShirtController {
+
+    @Autowired
+    ServiceLayer serviceLayer;
 
     @Autowired
     TShirtRepository tShirtRepository;
@@ -49,10 +53,11 @@ public class TShirtController {
 
     @PutMapping("/tshirts/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateTShirt(@RequestBody TShirt tShirt, @PathVariable int id){
+    public void updateTShirt(@RequestBody TShirt tShirt, @PathVariable int id) {
         Optional<TShirt> tShirt1 = tShirtRepository.findById(id);
         if(tShirt1.isPresent())
             tShirtRepository.save(tShirt);
+//        serviceLayer.handleUpdate("TShirt", id, tShirt);
     }
 
     @DeleteMapping("/tshirts/{id}")
