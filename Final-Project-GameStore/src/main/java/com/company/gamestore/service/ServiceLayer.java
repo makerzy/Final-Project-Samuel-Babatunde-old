@@ -46,7 +46,7 @@ public class ServiceLayer {
 
     @Transactional
     public Invoice saveInvoice(InvoiceViewModel ivModel)  {
-        Invoice invoice  = new Invoice();
+        Invoice invoice = new Invoice();
 
             if (ivModel.getQuantity() < 1) {
                 throw new InvalidQuantityException("Order quantity must be greater than or equal to 1");
