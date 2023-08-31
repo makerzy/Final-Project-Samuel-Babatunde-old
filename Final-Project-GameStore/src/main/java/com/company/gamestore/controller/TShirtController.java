@@ -54,10 +54,10 @@ public class TShirtController {
     @PutMapping("/tshirts/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateTShirt(@RequestBody TShirt tShirt, @PathVariable int id) {
-        Optional<TShirt> tShirt1 = tShirtRepository.findById(id);
-        if(tShirt1.isPresent())
-            tShirtRepository.save(tShirt);
-//        serviceLayer.handleUpdate("TShirt", id, tShirt);
+//        Optional<TShirt> tShirt1 = tShirtRepository.findById(id);
+//        if(tShirt1.isPresent())
+//            tShirtRepository.save(tShirt);
+        serviceLayer.handleUpdate("TShirt", id, tShirt);
     }
 
     @DeleteMapping("/tshirts/{id}")

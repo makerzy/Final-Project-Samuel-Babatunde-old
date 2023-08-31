@@ -50,10 +50,10 @@ public class InvoiceController {
     @PutMapping("/invoices/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateInvoice(@RequestBody Invoice invoice, @PathVariable int id){
-        Optional<Invoice> invoice1 = invoiceRepository.findById(id);
-        if(invoice1.isPresent())
-            invoiceRepository.save(invoice);
-//        serviceLayer.handleUpdate("Invoice", id, invoice);
+//        Optional<Invoice> invoice1 = invoiceRepository.findById(id);
+//        if(invoice1.isPresent())
+//            invoiceRepository.save(invoice);
+        serviceLayer.handleUpdate("Invoice", id, invoice);
     }
 
     @DeleteMapping("/invoices/{id}")
