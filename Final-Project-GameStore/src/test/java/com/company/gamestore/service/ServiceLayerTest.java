@@ -1,16 +1,23 @@
 package com.company.gamestore.service;
 
+import com.company.gamestore.exception.InsufficientStockException;
+import com.company.gamestore.exception.InvalidQuantityException;
+import com.company.gamestore.exception.UnknownStateCodeException;
 import com.company.gamestore.model.*;
 import com.company.gamestore.repository.*;
+import com.company.gamestore.viewmodel.InvoiceViewModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 public class ServiceLayerTest {
     private ServiceLayer serviceLayer;
@@ -20,15 +27,22 @@ public class ServiceLayerTest {
     private GameRepository gameRepository;
     private ConsoleRepository consoleRepository;
     private TShirtRepository tShirtRepository;
-
+    Invoice invoice;
+    InvoiceViewModel viewModel;
 
     @BeforeEach
-    private void setUp(){
+    private void setUp() {
+        setUpFeeRepo();
+        setUpTaxRepo();
+        setUpConsoleRepo();
+        setUpTShirtRepo();
+        setUpGameRepo();
+        setUpInvoiceRepo();
 
-        serviceLayer = new ServiceLayer(invoiceRepository, taxRepository, feeRepository, consoleRepository, gameRepository, tShirtRepository);
+
     }
 
-    private void setUpGameRepo(){
+    private void setUpGameRepo() {
         gameRepository = mock(GameRepository.class);
 
         Game game = new Game();
@@ -48,7 +62,7 @@ public class ServiceLayerTest {
         doReturn(games).when(gameRepository).findAll();
     }
 
-    public void setUpConsoleRepo(){
+    public void setUpConsoleRepo() {
         consoleRepository = mock(ConsoleRepository.class);
         Console console = new Console();
         console.setConsoleId(1);
@@ -59,15 +73,15 @@ public class ServiceLayerTest {
         console.setPrice(499.99);
         console.setQuantity(100);
 
-
         List<Console> consoles = new ArrayList<>();
         consoles.add(console);
 
         doReturn(console).when(consoleRepository).save(console);
-        doReturn(Optional.of(console)).when(gameRepository).findById(1);
+        doReturn(Optional.of(console)).when(consoleRepository).findById(1);
         doReturn(consoles).when(consoleRepository).findAll();
     }
-    public void setUpTShirtRepo(){
+
+    public void setUpTShirtRepo() {
         tShirtRepository = mock(TShirtRepository.class);
         TShirt tShirt = new TShirt();
         tShirt.setTshirtId(1);
@@ -86,33 +100,33 @@ public class ServiceLayerTest {
         doReturn(tShirts).when(tShirtRepository).findAll();
     }
 
-    public void setUpFee(){
+    public void setUpFeeRepo() {
         feeRepository = mock(FeeRepository.class);
 
-         Fee fee = new Fee();
-         fee.setProductType("Console");
-         fee.setFee(14.99);
-         Fee fee1 = new Fee();
-         fee1.setFee(1.98);
-         fee1.setProductType("T-Shirt");
-         Fee fee2 = new Fee();
-         fee2.setProductType("Game");
-         fee2.setFee(1.49);
-         List<Fee> fees = new ArrayList<>();
-         fees.add(fee);
-         fees.add(fee1);
-         fees.add(fee2);
+        Fee fee = new Fee();
+        fee.setProductType("Console");
+        fee.setFee(14.99);
+        Fee fee1 = new Fee();
+        fee1.setFee(1.98);
+        fee1.setProductType("T-Shirt");
+        Fee fee2 = new Fee();
+        fee2.setProductType("Game");
+        fee2.setFee(1.49);
+        List<Fee> fees = new ArrayList<>();
+        fees.add(fee);
+        fees.add(fee1);
+        fees.add(fee2);
 
         doReturn(fee).when(feeRepository).save(fee);
         doReturn(fee1).when(feeRepository).save(fee1);
         doReturn(fee2).when(feeRepository).save(fee2);
-        doReturn(Optional.of(fee)).when(feeRepository).findByProductType("Console");
-        doReturn(Optional.of(fee1)).when(feeRepository).findByProductType("T-Shirt");
-        doReturn(Optional.of(fee2)).when(feeRepository).findByProductType("Game");
+        doReturn(Arrays.asList(fee)).when(feeRepository).findByProductType("Console");
+        doReturn(Arrays.asList(fee1)).when(feeRepository).findByProductType("T-Shirt");
+        doReturn(Arrays.asList(fee2)).when(feeRepository).findByProductType("Game");
         doReturn(fees).when(feeRepository).findAll();
     }
 
-    public void setUpTax(){
+    public void setUpTaxRepo() {
         taxRepository = mock(TaxRepository.class);
         Tax tax = new Tax();
         tax.setState("CA");
@@ -132,42 +146,102 @@ public class ServiceLayerTest {
         doReturn(tax).when(taxRepository).save(tax);
         doReturn(tax1).when(taxRepository).save(tax1);
         doReturn(tax2).when(taxRepository).save(tax2);
-        doReturn(Optional.of(tax)).when(taxRepository).findByState("CA");
-        doReturn(Optional.of(tax1)).when(taxRepository).findByState("FL");
-        doReturn(Optional.of(tax2)).when(taxRepository).findByState("GA");
+        doReturn(Arrays.asList(tax)).when(taxRepository).findByState("CA");
+        doReturn(Arrays.asList(tax1)).when(taxRepository).findByState("FL");
+        doReturn(Arrays.asList(tax2)).when(taxRepository).findByState("GA");
         doReturn(taxes).when(taxRepository).findAll();
     }
 
+    public void setUpInvoiceRepo() {
+        invoiceRepository = mock(InvoiceRepository.class);
+        invoice = new Invoice();
 
-    @Test
-    public void shouldAddNewInvoice(){
+        invoice.setInvoiceId(1);
+        invoice.setName("Customer Name");
+        invoice.setStreet("1111 Customer Street");
+        invoice.setCity("Los Gatos");
+        invoice.setState("California");
+        invoice.setZipcode("94065");
+        invoice.setItemType("Console");
+        invoice.setItemId(1);
+        invoice.setQuantity(2);
+        List<Tax> taxes = taxRepository.findByState("CA");
+        List<Fee> fees = feeRepository.findByProductType("Console");
+        Fee fee = fees.get(0);
+        Tax tax = taxes.get(0);
 
+        Optional<Console> console = consoleRepository.findById(1);
+
+        double unitPrice = console.get().getPrice();
+        invoice.setUnitPrice(unitPrice);
+        double subtotal = round(2 * unitPrice);
+        invoice.setSubtotal(subtotal);
+        double taxVal = round(subtotal * tax.getRate());
+        invoice.setTax(taxVal);
+        double processingFee = fee.getFee();
+        invoice.setProcessingFee(processingFee);
+        double total = round(subtotal + processingFee + taxVal);
+        invoice.setTotal(total);
+
+        viewModel = new InvoiceViewModel();
+        viewModel.setInvoiceId(1);
+        viewModel.setName("Customer Name");
+        viewModel.setStreet("1111 Customer Street");
+        viewModel.setCity("Los Gatos");
+        viewModel.setState("California");
+        viewModel.setZipcode("94065");
+        viewModel.setItemType("Console");
+        viewModel.setItemId(1);
+        viewModel.setQuantity(2);
+
+        serviceLayer = mock(ServiceLayer.class);
+
+        doReturn(invoice).when(serviceLayer).saveInvoice(viewModel);
+        doReturn(Optional.of(invoice)).when(invoiceRepository).findById(1);
+    }
+
+    private double round(double value){
+        return (double)Math.round(value *100)/100;
     }
 
 
     @Test
-    public void shouldThrowInsufficientStockException(){
-
-    }
-
-    @Test
-    public void shouldThrowUnknownStateCodeException(){
-
-    }
-
-    @Test
-    public void shouldThrowInvalidQuantityException(){
-
-    }
-
-    @Test
-    public void shouldThrowIfAttemptToUpdateNullObject(){
-
+    public void shouldAddNewInvoice() {
+        Invoice invoice1 = serviceLayer.saveInvoice(viewModel);
+        assertEquals(invoice1, invoice);
     }
 
 
     @Test
-    public void shouldThrowIfAttemptToUpdateNotMatchingIDs(){
+    public void shouldThrowInsufficientStockException() {
+        viewModel.setQuantity(110);
+        when(serviceLayer.saveInvoice(viewModel)).thenThrow(new InsufficientStockException("Order quantity must be less than or equal available stock"));
 
     }
+
+
+
+    @Test
+    public void shouldThrowUnknownStateCodeException() {
+        viewModel.setState("MA");
+        when(serviceLayer.saveInvoice(viewModel)).thenThrow(new UnknownStateCodeException("Cannot process order for unknown state code"));
+    }
+
+    @Test
+    public void shouldThrowInvalidQuantityException() {
+        viewModel.setQuantity(0);
+        when(serviceLayer.saveInvoice(viewModel)).thenThrow(new InvalidQuantityException("Order quantity must be greater than or equal to 1"));
+
+    }
+
+//    @Test
+//    public void shouldThrowIfAttemptToUpdateNullObject() {
+//
+//    }
+//
+//
+//    @Test
+//    public void shouldThrowIfAttemptToUpdateNotMatchingIDs() {
+//
+//    }
 }

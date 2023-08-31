@@ -53,7 +53,7 @@ class ConsoleControllerTest {
         when(consoleRepository.save(any(Console.class))).thenReturn(console);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/console")
+                        .post("/consoles")
                         .content(mapper.writeValueAsString(console))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -71,7 +71,7 @@ class ConsoleControllerTest {
         when(consoleRepository.findAll()).thenReturn(Arrays.asList(console));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/console"))
+                        .get("/consoles"))
                 .andExpect(jsonPath("$[0].model").value("PlayStation5"))
                 .andExpect(jsonPath("$[0].manufacturer").value("Sony"))
                 .andExpect(jsonPath("$[0].memoryAmount").value("825GB SSD"))
@@ -85,7 +85,7 @@ class ConsoleControllerTest {
         when(consoleRepository.findById(1)).thenReturn(Optional.of(console));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/console/{id}", 1))
+                        .get("/consoles/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.model").value("PlayStation5"))
                 .andExpect(jsonPath("$.manufacturer").value("Sony"))
@@ -101,7 +101,7 @@ class ConsoleControllerTest {
 
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .put("/console/{id}", console.getConsoleId())
+                        .put("/consoles/{id}", console.getConsoleId())
                         .content(mapper.writeValueAsString(console))
                         .contentType(MediaType.APPLICATION_JSON)
 
@@ -111,7 +111,7 @@ class ConsoleControllerTest {
     @Test
     public void shouldDeleteConsoleById() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/console/{id}", 1)
+                MockMvcRequestBuilders.delete("/consoles/{id}", 1)
 
         ).andExpect(status().isNoContent());
     }
@@ -121,7 +121,7 @@ class ConsoleControllerTest {
         when(consoleRepository.findByManufacturer("Sony")).thenReturn(Arrays.asList(console));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/console/manufacturer/{manufacturer}", "Sony"))
+                        .get("/consoles/manufacturers/{manufacturer}", "Sony"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].model").value("PlayStation5"))
                 .andExpect(jsonPath("$[0].manufacturer").value("Sony"))

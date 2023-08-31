@@ -20,7 +20,7 @@ public class Game implements Serializable {
     @NotEmpty(message = "You must supply a value for title.")
     private String title;
     @NotEmpty(message = "You must supply a value for esrbRating.")
-    @Column(name = "esr_rating")
+    @Column(name = "esrb_rating")
     private String esrbRating;
     @NotEmpty(message = "You must supply a value for description.")
     private String description;

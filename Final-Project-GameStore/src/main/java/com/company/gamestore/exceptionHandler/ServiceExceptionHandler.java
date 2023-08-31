@@ -1,8 +1,6 @@
 package com.company.gamestore.exceptionHandler;
 
-import com.company.gamestore.exception.InsufficientStockException;
-import com.company.gamestore.exception.InvalidQuantityException;
-import com.company.gamestore.exception.UnknownStateCodeException;
+import com.company.gamestore.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,6 +25,18 @@ public class ServiceExceptionHandler {
     @ExceptionHandler(UnknownStateCodeException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleUnknownStateCodeException(UnknownStateCodeException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IdMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleGameIdMismatchException(IdMismatchException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleConsoleNotFoundException(NotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

@@ -3,6 +3,7 @@ package com.company.gamestore.controller;
 
 import com.company.gamestore.model.Console;
 import com.company.gamestore.model.Invoice;
+import com.company.gamestore.model.TShirt;
 import com.company.gamestore.repository.*;
 import com.company.gamestore.service.ServiceLayer;
 import com.company.gamestore.viewmodel.InvoiceViewModel;
@@ -20,8 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(InvoiceController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -72,30 +72,39 @@ public class InvoiceControllerTest {
         model.setItemId(1);
         model.setQuantity(1);
 
-        serviceLayer = new ServiceLayer(invoiceRepository, taxRepository, feeRepository, consoleRepository, gameRepository, tShirtRepository);
-        invoice = serviceLayer.saveInvoice(model);
+        invoice = new Invoice();
+        invoice.setInvoiceId(1);
+        invoice.setName("Customer name");
+        invoice.setStreet("1111 Customer street");
+        invoice.setCity("Redwood");
+        invoice.setState("California");
+        invoice.setZipcode("94065");
+        invoice.setItemType("Console");
+        invoice.setItemId(1);
+        invoice.setQuantity(1);
+        invoice.setUnitPrice(499.99);
+        invoice.setSubtotal(999.98);
+        invoice.setTax(69.99);
+        invoice.setProcessingFee(14.99);
+        invoice.setTotal(1084.97);
 
     }
 
     @Test
     public void shouldCreateNewInvoice() throws Exception {
 
+        when(serviceLayer.saveInvoice(any(InvoiceViewModel.class))).thenReturn(invoice);
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/invoices")
-                                .content(mapper.writeValueAsString(model))
+                                .content(mapper.writeValueAsString(model)) // input
                                 .contentType(MediaType.APPLICATION_JSON)
+
                 )
 
                 .andExpect(status().isCreated())
+                .andExpect(content().json(mapper.writeValueAsString(invoice)))
+                .andDo(print())
                 .andReturn();
-//                .andExpect(jsonPath("$.name").value("Customer name"))
-//                .andExpect(jsonPath("$.street").value("1111 Customer street"))
-//                .andExpect(jsonPath("$.city").value("Redwood"))
-//                .andExpect(jsonPath("$.state").value("California"))
-//                .andExpect(jsonPath("$.zipcode").value("94065"))
-//                .andExpect(jsonPath("$.item_type").value("Console"))
-//                .andExpect(jsonPath("$.item_id").value(1))
-//                .andExpect(jsonPath("$.quantity").value(1));
     }
 
     @Test
