@@ -52,7 +52,7 @@ public class ServiceLayer {
     public Invoice saveInvoice(InvoiceViewModel ivModel)  {
         Invoice invoice  = new Invoice();
 
-        try {
+//        try {
             if (ivModel.getQuantity() < 1) {
                 throw new InvalidQuantityException("Order quantity must be greater than or equal to 1");
             }
@@ -145,9 +145,9 @@ public class ServiceLayer {
 
             invoice = invoiceRepository.save(invoice);
 
-        }catch (Exception e){
-            ;
-        }
+//        }catch (Exception e){
+//            ;
+//        }
         System.out.println(invoice.toString());
         return invoice;
     }
@@ -155,9 +155,9 @@ public class ServiceLayer {
 
     @Transactional
     public void handleUpdate(String category, int id, Object object) {
-        try {
-            switch (category) {
-                case "Game":
+//        try {
+            switch (category.toLowerCase()) {
+                case "game":
                     Game newGame = (Game) object;
                     if (newGame.getGameId() != id) {
                         throw new IdMismatchException("Game ID and ID must be the same");
@@ -167,7 +167,7 @@ public class ServiceLayer {
                         throw new NotFoundException("Cannot update non existing Game Object");
                     gameRepository.save(newGame);
                     break;
-                case "Console":
+                case "console":
                     Console newConsole = (Console) object;
                     if (newConsole.getConsoleId() != id) {
                         throw new IdMismatchException("Console ID and ID must be the same");
@@ -177,7 +177,7 @@ public class ServiceLayer {
                         throw new NotFoundException("Cannot update non existing Console Object");
                     consoleRepository.save(newConsole);
                     break;
-                case "TShirt":
+                case "tshirt":
                     TShirt newTshirt = (TShirt) object;
                     if (newTshirt.getTshirtId() != id) {
                         throw new IdMismatchException("T-Shirt ID and ID must be the same");
@@ -187,7 +187,7 @@ public class ServiceLayer {
                         throw new NotFoundException("Cannot update non existing T-Shirt Object");
                     tShirtRepository.save(newTshirt);
                     break;
-                case "Invoice":
+                case "invoice":
                     Invoice newInvoice = (Invoice) object;
                     if (newInvoice.getInvoiceId() != id) {
                         throw new IdMismatchException("Invoice ID and ID must be the same");
@@ -199,9 +199,9 @@ public class ServiceLayer {
                     break;
 
             }
-        }catch (Exception e){
-            ;
-        }
+//        }catch (Exception e){
+//            ;
+//        }
     }
 
 
